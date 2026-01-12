@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conduit Collective</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            background: #000;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+            font-size: 0.9rem;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        nav a.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .page {
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            scroll-snap-align: start;
+            padding-top: 60px;
+        }
+
+        .page img {
+            max-width: 100%;
+            max-height: 100vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0.5rem;
+                gap: 0.5rem;
+            }
+
+            nav a {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .page {
+                padding-top: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                gap: 0.3rem;
+            }
+
+            nav a {
+                padding: 0.3rem 0.5rem;
+                font-size: 0.7rem;
+            }
+
+            .page {
+                padding-top: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#page1" class="nav-link">The Future Is Green</a>
+        <a href="#page2" class="nav-link">Future of Advertising</a>
+        <a href="#page3" class="nav-link">One Configurator</a>
+        <a href="#page4" class="nav-link">Measurable Results</a>
+        <a href="#page5" class="nav-link">AI Generated</a>
+    </nav>
+
+    <div id="page1" class="page">
+        <img src="images/page1.jpg" alt="The Future Is Green - 2027 Vector UFO">
+    </div>
+
+    <div id="page2" class="page">
+        <img src="images/page2.jpg" alt="The Future of Advertising Has Arrived">
+    </div>
+
+    <div id="page3" class="page">
+        <img src="images/page3.jpg" alt="One Configurator Every Use Case">
+    </div>
+
+    <div id="page4" class="page">
+        <img src="images/page4.jpg" alt="One Funnel One Cloud Measurable Results">
+    </div>
+
+    <div id="page5" class="page">
+        <img src="images/page5.jpg" alt="State-of-the-Art AI Generated Advertising">
+    </div>
+
+    <script>
+        // Active navigation highlighting
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.page');
+
+        function setActiveLink() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', setActiveLink);
+        window.addEventListener('load', setActiveLink);
+    </script>
+</body>
+</html>
