@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Conduit Collective</title>
+    <title>The Conduit Collective - Page 2</title>
     <style>
         * {
             margin: 0;
@@ -19,66 +19,112 @@
         .page {
             width: 100%;
             height: 100vh;
-            background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page1.jpg');
+            background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page2.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 80px;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 60px 40px;
+            position: relative;
         }
         
-        .content {
+        .headline {
             text-align: center;
-            max-width: 900px;
-            padding: 0 20px;
-        }
-        
-        h1 {
             color: white;
             font-size: 3.5rem;
             font-weight: bold;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            line-height: 1.3;
+        }
+        
+        .bottom-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .body-text {
+            color: white;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: center;
+            max-width: 900px;
+            padding: 25px 45px;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        
+        .talk-bubble {
+            background-color: rgba(255, 235, 100, 0.95);
             color: black;
-            font-size: 1.5rem;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            position: absolute;
+            top: 80px;
+            right: 60px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             line-height: 1.8;
-            font-weight: 500;
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 25px 35px;
-            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .talk-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            right: 30px;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 15px solid rgba(255, 235, 100, 0.95);
         }
         
         @media (max-width: 768px) {
             .page {
-                padding-top: 40px;
+                padding: 30px 20px;
             }
             
-            h1 {
+            .headline {
                 font-size: 2rem;
-                margin-bottom: 20px;
             }
             
             .body-text {
                 font-size: 1.1rem;
-                padding: 20px;
+                padding: 25px 30px;
+            }
+            
+            .talk-bubble {
+                font-size: 1rem;
+                padding: 12px 25px;
             }
         }
     </style>
 </head>
 <body>
     <div class="page">
-        <div class="content">
-            <h1>The Future of Advertising has Arrived</h1>
+        <div class="headline">
+            One Configurator<br>
+            Every<br>
+            Use Case
+        </div>
+        
+        <div class="bottom-content">
             <div class="body-text">
-                The Conduit Collective is the Next Generation Digital Advertising Agency.<br>
-                We are Mobility Focused, powered by CAD-based Digital Twins,<br>
-                integrated into Real Time Configurators, and driven by Generative AI
+                Our process begins with Production Accurate CAD data, transformed into a High Fidelity Digital Twin and deployed within<br>
+                a Real Time Configurator. This single system supports internal Product Validation high end Creative Development, consumer<br>
+                facing Interactive Experiences and downstream AI LoRA Model Training all from this Single Source of Truth.
+            </div>
+            
+            <div class="talk-bubble">
+                Validate<br>
+                Create<br>
+                Interact<br>
+                LoRA
             </div>
         </div>
     </div>
