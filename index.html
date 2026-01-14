@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Conduit Collective | Next-Gen Advertising</title>
+    <title>The Conduit Collective</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -21,101 +21,189 @@
             color: #fff;
             font-family: var(--body-font);
             overflow-x: hidden;
-            scroll-behavior: smooth;
         }
 
-        /* --- INTRO OVERLAY --- */
+        /* --- INTRO OVERLAY FIX --- */
         #intro-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column; /* Stack video and buttons vertically */
-            justify-content: center;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.2); /* Lighter tint */
-            transition: opacity 1s ease, visibility 1s;
-        }
-
-        /* This creates the blur ONLY behind the video area */
-        .video-container {
-            position: relative;
-            padding: 40px;
+            top: 0; left: 0; 
+            width: 100vw; height: 100vh;
+            z-index: 9999; /* Set to very high */
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(7px); /* 50% strength of original 15px */
-            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.9); /* Solid black initially */
+            transition: opacity 0.8s ease;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 85%;
+            max-width: 1100px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
         }
 
         #intro-video {
-            width: 85vw;
-            max-width: 1200px;
-            z-index: 2001;
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         .intro-controls {
-            margin-top: 20px;
+            margin-top: 25px;
             display: flex;
-            gap: 20px;
+            gap: 15px;
+            justify-content: center;
+            z-index: 10000;
         }
 
         .ui-btn {
-            background: rgba(0, 0, 0, 0.6);
+            background: #000;
             border: 1px solid var(--accent);
             color: var(--accent);
-            padding: 12px 24px;
+            padding: 12px 28px;
             font-family: var(--header-font);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             letter-spacing: 0.2em;
             cursor: pointer;
-            transition: 0.3s;
             text-transform: uppercase;
+            pointer-events: auto; /* Ensures they are clickable */
         }
 
-        .ui-btn:hover {
-            background: var(--accent);
-            color: #000;
-        }
+        .ui-btn:hover { background: var(--accent); color: #000; }
 
-        .intro-hidden { opacity: 0; visibility: hidden; }
+        .intro-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
         /* --- NAVIGATION --- */
         .nav-container {
             position: fixed;
-            top: 30px;
-            left: 50%;
+            top: 30px; left: 50%;
             transform: translateX(-50%);
             z-index: 1000;
-            display: flex;
-            gap: 12px;
+            display: flex; gap: 10px;
         }
 
         .nav-btn {
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             color: #fff;
             border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 18px;
-            border-radius: 2px;
+            padding: 10px 15px;
             font-family: var(--header-font);
-            font-size: 0.65rem;
-            letter-spacing: 0.15em;
+            font-size: 0.6rem;
             cursor: pointer;
-            transition: all 0.3s ease;
             text-transform: uppercase;
         }
 
-        .nav-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+        .nav-btn.active { background: var(--accent); color: #000; }
 
-        /* --- PAGE STRUCTURE --- */
+        /* --- SECTIONS --- */
         section {
+            width: 100%; height: 100vh;
             position: relative;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            padding: 140px 8% 80px 8%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding
+            justify-content: center;
+        }
+
+        .bg-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+
+        .headline {
+            position: relative; z-index: 10;
+            font-family: var(--header-font);
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .content-box {
+            position: relative; z-index: 10;
+            max-width: 600px;
+            padding: 30px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-overlay">
+        <div class="video-wrapper">
+            <video id="intro-video" autoplay muted playsinline loop>
+                <source src="https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/Avatar2.WebM" type="video/webm">
+            </video>
+            <div class="intro-controls">
+                <button class="ui-btn" onclick="toggleMute()" id="mute-text">🔊 Unmute</button>
+                <button class="ui-btn" onclick="dismissIntro()">Skip Intro</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="nav-container">
+        <button class="nav-btn active" onclick="scrollToPage('page1')">Home</button>
+        <button class="nav-btn" onclick="scrollToPage('page2')">Configurator</button>
+        <button class="nav-btn" onclick="scrollToPage('page3')">AI Ads</button>
+        <button class="nav-btn" onclick="scrollToPage('page4')">Results</button>
+        <button class="nav-btn" onclick="scrollToPage('page5')">Connect</button>
+    </nav>
+
+    <section id="page1">
+        <div class="bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page1.jpg');"></div>
+        <h1 class="headline">The Future Of Advertising</h1>
+        <div class="content-box">
+            <p>Next Generation Digital Advertising Agency powered by CAD-based Digital Twins.</p>
+        </div>
+    </section>
+
+    <section id="page2">
+        <div class="bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page2.jpg');"></div>
+        <h1 class="headline">One Configurator</h1>
+        <div class="content-box">
+            <p>Production Accurate CAD data transformed into High Fidelity Digital Twins.</p>
+        </div>
+    </section>
+
+    <script>
+        const overlay = document.getElementById('intro-overlay');
+        const video = document.getElementById('intro-video');
+        const muteText = document.getElementById('mute-text');
+
+        function toggleMute() {
+            if (video.muted) {
+                video.muted = false;
+                muteText.innerText = "🔇 Mute";
+            } else {
+                video.muted = true;
+                muteText.innerText = "🔊 Unmute";
+            }
+        }
+
+        function dismissIntro() {
+            overlay.classList.add('intro-hidden');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                // Only pause video if you don't want it running in background
+                video.pause(); 
+            }, 800);
+        }
+
+        function scrollToPage(id) {
+            dismissIntro();
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
