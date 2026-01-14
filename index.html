@@ -14,6 +14,11 @@
             background-color: #000;
         }
 
+        /* Prevent scrolling when intro is active */
+        body.intro-active {
+            overflow: hidden;
+        }
+
         /* --- TRANSLUCENT INTRO OVERLAY --- */
         #intro-overlay {
             position: fixed;
@@ -22,13 +27,13 @@
             z-index: 9999;
             display: flex;
             flex-direction: column;
-            justify(content: center;
+            justify-content: center;
             align-items: center;
-            background: rgba(255, 255, 255, 0.7); 
+            background: rgba(255, 255, 255, 0.75); /* Restored Translucent White */
             backdrop-filter: blur(15px);
             transition: opacity 1.2s ease-in-out;
         }
-        .video-wrapper { position: relative; width: 100%; max-width: 900px; aspect-ratio: 16 / 9; background: #fff; }
+        .video-wrapper { position: relative; width: 100%; max-width: 900px; aspect-ratio: 16 / 9; background: #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
         #player { width: 100%; height: 100%; pointer-events: none; border: none; }
         .intro-controls { margin-top: 30px; display: flex; gap: 15px; z-index: 10000; }
         .intro-btn {
@@ -38,22 +43,17 @@
         .intro-btn:hover { background-color: #ffeb64; color: #000; }
         .intro-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         
-        /* --- UPDATED RESPONSIVE NAVIGATION --- */
+        /* --- MOBILE-FRIENDLY NAVIGATION --- */
         .nav-container {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 1000; display: flex; gap: 8px; width: 90%; max-width: 600px;
-            justify-content: center;
-            overflow-x: auto; /* Allows swiping if buttons overflow */
-            padding: 5px;
-            scrollbar-width: none; /* Hide scrollbar for clean look */
+            z-index: 1000; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; 
+            width: 95%; max-width: 800px; padding: 10px;
         }
-        .nav-container::-webkit-scrollbar { display: none; }
-
         .nav-btn {
             background-color: rgba(255, 255, 255, 0.9); color: black; border: none;
             padding: 8px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 600;
             cursor: pointer; transition: 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            white-space: nowrap; /* Prevents text like "Configurator" from breaking */
+            white-space: nowrap;
         }
         @media (min-width: 600px) {
             .nav-btn { padding: 10px 18px; font-size: 0.85rem; }
@@ -96,15 +96,15 @@
         .reels-section { background-color: #050505; justify-content: flex-start !important; }
         .carousel-wrapper { width: 100%; max-width: 1400px; margin-bottom: 40px; position: relative; z-index: 10; }
         .carousel-track {
-            display: flex; overflow-x: auto; gap: 20px; padding: 10px 0;
+            display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 10px 0;
             scrollbar-width: none; scroll-snap-type: x mandatory;
         }
         .carousel-track::-webkit-scrollbar { display: none; }
         .reel-item {
-            flex: 0 0 75%; scroll-snap-align: center;
+            flex: 0 0 85%; scroll-snap-align: center;
             background: rgba(255,255,255,0.05); border-radius: 15px; padding: 10px; border: 1px solid rgba(255,255,255,0.1);
         }
-        @media (min-width: 900px) { .reel-item { flex: 0 0 480px; } }
+        @media (min-width: 900px) { .reel-item { flex: 0 0 500px; } }
         .reel-item iframe { width: 100%; aspect-ratio: 16/9; border-radius: 10px; border: none; }
         .reel-label { color: #ffeb64; font-size: 0.75rem; font-weight: bold; margin-top: 10px; text-align: center; text-transform: uppercase; }
         .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
@@ -133,12 +133,12 @@
         #page5 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page5.jpg'); justify-content: center; }
     </style>
 </head>
-<body>
+<body class="intro-active">
 
     <div id="intro-overlay">
         <div class="video-wrapper"><div id="player"></div></div>
         <div class="intro-controls">
-            <button class="intro-btn" id="mute-btn" onclick="toggleMute()">Play Audio</button>
+            <button class="intro-btn" id="mute-btn" onclick="toggleMute()">🔊 Play Audio</button>
             <button class="intro-btn" onclick="dismissIntro()">Skip Intro</button>
         </div>
     </div>
@@ -219,12 +219,13 @@
         }
         function toggleMute() {
             const btn = document.getElementById('mute-btn');
-            if (player.isMuted()) { player.unMute(); btn.innerText = "Mute Audio"; }
-            else { player.mute(); btn.innerText = "Play Audio"; }
+            if (player.isMuted()) { player.unMute(); btn.innerText = "🔇 Mute Audio"; }
+            else { player.mute(); btn.innerText = "🔊 Play Audio"; }
         }
         function dismissIntro() {
             const overlay = document.getElementById('intro-overlay');
             overlay.classList.add('intro-hidden');
+            document.body.classList.remove('intro-active');
             setTimeout(() => { overlay.style.display = 'none'; player.pauseVideo(); }, 1200);
         }
         function scrollToPage(pageId, btn) {
