@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Conduit Collective</title>
+    <title>The Conduit Collective | Next-Gen Advertising</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -21,29 +21,29 @@
             color: #fff;
             font-family: var(--body-font);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* --- INTRO OVERLAY FIX --- */
+        /* --- INTRO OVERLAY --- */
         #intro-overlay {
             position: fixed;
-            top: 0; left: 0; 
-            width: 100vw; height: 100vh;
-            z-index: 9999; /* Set to very high */
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: rgba(0, 0, 0, 0.9); /* Solid black initially */
+            background: rgba(0, 0, 0, 0.95);
             transition: opacity 0.8s ease;
         }
 
         .video-wrapper {
             position: relative;
-            width: 85%;
-            max-width: 1100px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(8px);
+            width: 90%;
+            max-width: 1200px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(7px);
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
@@ -52,6 +52,7 @@
         #intro-video {
             width: 100%;
             height: auto;
+            max-height: 70vh;
             display: block;
         }
 
@@ -60,7 +61,6 @@
             display: flex;
             gap: 15px;
             justify-content: center;
-            z-index: 10000;
         }
 
         .ui-btn {
@@ -69,15 +69,13 @@
             color: var(--accent);
             padding: 12px 28px;
             font-family: var(--header-font);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             letter-spacing: 0.2em;
             cursor: pointer;
             text-transform: uppercase;
-            pointer-events: auto; /* Ensures they are clickable */
         }
 
         .ui-btn:hover { background: var(--accent); color: #000; }
-
         .intro-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
         /* --- NAVIGATION --- */
@@ -87,20 +85,23 @@
             transform: translateX(-50%);
             z-index: 1000;
             display: flex; gap: 10px;
+            width: max-content;
         }
 
         .nav-btn {
             background: rgba(0,0,0,0.8);
             color: #fff;
             border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 15px;
+            padding: 10px 18px;
             font-family: var(--header-font);
             font-size: 0.6rem;
+            letter-spacing: 0.1em;
             cursor: pointer;
             text-transform: uppercase;
+            transition: 0.3s;
         }
 
-        .nav-btn.active { background: var(--accent); color: #000; }
+        .nav-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
         /* --- SECTIONS --- */
         section {
@@ -109,32 +110,80 @@
             padding: 140px 8% 80px 8%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
         }
 
-        .bg-layer {
+        .layer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background-size: cover;
-            background-position: center;
-            z-index: 1;
+            background-position: center center;
+            background-repeat: no-repeat;
         }
+        .bg-layer { z-index: 1; }
+        .character-layer { z-index: 2; pointer-events: none; }
 
         .headline {
             position: relative; z-index: 10;
             font-family: var(--header-font);
-            font-size: clamp(1.5rem, 5vw, 3rem);
-            margin-bottom: 20px;
+            font-size: clamp(1.4rem, 4vw, 2.8rem);
+            line-height: 1.2;
             text-transform: uppercase;
+            letter-spacing: 0.2em;
         }
 
         .content-box {
             position: relative; z-index: 10;
-            max-width: 600px;
-            padding: 30px;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(10px);
-            border-left: 4px solid var(--accent);
+            max-width: 850px;
+            padding: 35px 45px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-left: 3px solid var(--accent);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .body-text {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .body-text strong { font-weight: 700; color: var(--accent); text-transform: uppercase; }
+
+        /* --- HOTSPOTS --- */
+        .hotspot {
+            position: absolute; z-index: 100;
+            cursor: pointer; pointer-events: auto;
+            transform: translate(-50%, -50%);
+        }
+        .hotspot-dot { width: 14px; height: 14px; background: var(--accent); border-radius: 50%; position: relative; }
+        .hotspot-pulse {
+            position: absolute; top: -13px; left: -13px; width: 40px; height: 40px;
+            border: 2px solid var(--accent); border-radius: 50%;
+            animation: pulse 2s infinite; opacity: 0;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.5); opacity: 0.8; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+
+        /* --- FORM --- */
+        .form-container {
+            max-width: 500px; margin: 0 auto; width: 100%;
+            background: rgba(0,0,0,0.6); padding: 30px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-family: var(--header-font); font-size: 0.6rem; margin-bottom: 5px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white;
+        }
+
+        @media (max-width: 768px) {
+            section { padding-top: 110px; text-align: center; }
+            .content-box { padding: 25px; }
+            .nav-container { top: 15px; width: 95%; overflow-x: auto; }
         }
     </style>
 </head>
@@ -142,7 +191,7 @@
 
     <div id="intro-overlay">
         <div class="video-wrapper">
-            <video id="intro-video" autoplay muted playsinline loop>
+            <video id="intro-video" autoplay muted playsinline loop preload="auto">
                 <source src="https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/Avatar2.WebM" type="video/webm">
             </video>
             <div class="intro-controls">
@@ -161,18 +210,62 @@
     </nav>
 
     <section id="page1">
-        <div class="bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page1.jpg');"></div>
-        <h1 class="headline">The Future Of Advertising</h1>
+        <div class="layer bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page1.jpg');"></div>
+        <h1 class="headline">The Future Of<br>Advertising Has Arrived</h1>
         <div class="content-box">
-            <p>Next Generation Digital Advertising Agency powered by CAD-based Digital Twins.</p>
+            <p class="body-text">The Conduit Collective is the <strong>Next Generation</strong> Digital Advertising Agency. We are Mobility Focused, powered by CAD-based Digital Twins, integrated into Real Time Configurators, and driven by Generative AI.</p>
         </div>
     </section>
 
     <section id="page2">
-        <div class="bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page2.jpg');"></div>
-        <h1 class="headline">One Configurator</h1>
+        <div class="layer bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page2.jpg');"></div>
+        <div class="layer character-layer" style="background-image: url('REPLACE_WITH_YOUR_PNG');">
+            <div class="hotspot" style="top: 45%; left: 75%;" onclick="alert('Validate • Create • Interact • LoRA')">
+                <div class="hotspot-dot"><div class="hotspot-pulse"></div></div>
+            </div>
+        </div>
+        <h1 class="headline">One Configurator<br>Every Use Case</h1>
         <div class="content-box">
-            <p>Production Accurate CAD data transformed into High Fidelity Digital Twins.</p>
+            <p class="body-text">Our process begins with Production Accurate CAD data, transformed into a <strong>High Fidelity Digital Twin</strong> and deployed within a Real Time Configurator. This single system supports internal Product Validation, creative development, and AI training.</p>
+        </div>
+    </section>
+
+    <section id="page3">
+        <div class="layer bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page3.jpg');"></div>
+        <div class="layer character-layer" style="background-image: url('REPLACE_WITH_YOUR_PNG');">
+            <div class="hotspot" style="top: 50%; left: 65%;" onclick="alert('Print • Streaming • Digital • Social')">
+                <div class="hotspot-dot"><div class="hotspot-pulse"></div></div>
+            </div>
+        </div>
+        <h1 class="headline">State of the Art<br>Generative AI Advertising</h1>
+        <div class="content-box">
+            <p class="body-text">Our configurator trains a <strong>Branded AI Model</strong> that produces and distributes Product-Accurate content across Every Media Channel. The result: unmatched Scalability, Consistency, and Speed to Market.</p>
+        </div>
+    </section>
+
+    <section id="page4">
+        <div class="layer bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page4.jpg');"></div>
+        <div class="layer character-layer" style="background-image: url('REPLACE_WITH_YOUR_PNG');">
+            <div class="hotspot" style="top: 40%; left: 80%;" onclick="alert('Awareness • Connection • Conversion')">
+                <div class="hotspot-dot"><div class="hotspot-pulse"></div></div>
+            </div>
+        </div>
+        <h1 class="headline">One Funnel, One Cloud:<br>Measurable Results</h1>
+        <div class="content-box">
+            <p class="body-text">Every interaction—from Awareness to Conversion—is generated, distributed, and measured from one <strong>Centralized Cloud</strong>, enabling Precise Attribution of Performance.</p>
+        </div>
+    </section>
+
+    <section id="page5">
+        <div class="layer bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page5.jpg');"></div>
+        <h1 class="headline" style="text-align:center;">Let's Connect</h1>
+        <div class="form-container">
+            <form>
+                <div class="form-group"><label>NAME</label><input type="text"></div>
+                <div class="form-group"><label>EMAIL</label><input type="email"></div>
+                <div class="form-group"><label>MESSAGE</label><textarea rows="3"></textarea></div>
+                <button type="button" class="ui-btn" style="width:100%;">Submit Feed</button>
+            </form>
         </div>
     </section>
 
@@ -193,17 +286,26 @@
 
         function dismissIntro() {
             overlay.classList.add('intro-hidden');
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                // Only pause video if you don't want it running in background
-                video.pause(); 
-            }, 800);
+            setTimeout(() => { overlay.style.display = 'none'; video.pause(); }, 800);
         }
 
         function scrollToPage(id) {
-            dismissIntro();
+            if(!overlay.classList.contains('intro-hidden')) dismissIntro();
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
+
+        window.addEventListener('scroll', () => {
+            const pages = ['page1', 'page2', 'page3', 'page4', 'page5'];
+            const navBtns = document.querySelectorAll('.nav-btn');
+            pages.forEach((pageId, index) => {
+                const element = document.getElementById(pageId);
+                const rect = element.getBoundingClientRect();
+                if (rect.top <= 250 && rect.bottom >= 250) {
+                    navBtns.forEach(btn => btn.classList.remove('active'));
+                    navBtns[index].classList.add('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
