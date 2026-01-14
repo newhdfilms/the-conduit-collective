@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Conduit Collective | Next-Gen Advertising</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --accent: #ffeb64;
+            --header-font: 'Syncopate', sans-serif;
+            --body-font: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: var(--body-font);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- INTRO OVERLAY --- */
+        #intro-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            transition: opacity 1s ease, visibility 1s;
+        }
+
+        #intro-video {
+            width: 90%;
+            max-width: 1400px;
+            z-index: 2001;
+        }
+
+        #skip-intro {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 12px 24px;
+            font-family: var(--header-font);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            cursor: pointer;
+            z-index: 2002;
+            transition: 0.3s;
+        }
+
+        #skip-intro:hover { background: var(--accent); color: #000; }
+
+        .intro-hidden { opacity: 0; visibility: hidden; }
+
+        /* --- NAVIGATION --- */
+        .nav-container {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 18px;
+            border-radius: 2px;
+            font-family: var(--header-font);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .nav-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+        /* --- PAGE STRUCTURE --- */
+        section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 140px 8% 80px 8%;
+        }
+
+        .layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+        .bg-layer { z-index: 1; }
+        .character-layer { z-index: 2; pointer-events: none; }
+
+        /* --- TYPOGRAPHY --- */
+        .headline {
+            position: relative;
+            z-index: 10;
+            font-family: var(--header-font);
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            font-size: clamp(1.5rem, 4vw, 2.8rem);
+            line-height: 1.2;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+
+        .content-box {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            padding: 35px 45px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-left: 3px solid var(--accent);
+        }
+
+        .body-text {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .body-text strong { font-weight: 700; color: var(--accent); text-transform: uppercase; }
+
+        /* --- HOTSPOTS --- */
+        .hotspot {
+            position: absolute;
+            z-index: 100;
+            cursor: pointer;
+            pointer-events: auto;
+            transform: translate(-50%, -50%);
+        }
+
+        .hotspot-dot { width: 14px; height: 14px; background: var(--accent); border-radius: 50%; }
+        .hotspot-pulse {
+            position: absolute; top: -13px; left: -13px; width: 40px; height: 40px;
+            border: 2px solid var(--accent); border-radius: 50%;
+            animation: pulse 2s infinite; opacity: 0;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.5); opacity: 0.8; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+
+        /* --- CONTACT FORM --- */
+        .form-container {
+            position: relative; z-index: 10;
+            background: rgba(0,0,0,0.8);
+            padding: 40px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);
+            width: 100%; max-width: 500px; margin: 0 auto;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-family: var(--header-font); font-size: 0.6rem; letter-spacing: 0.2em; margin-bottom: 8px; text-transform: uppercase; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 2px;
+        }
+        .submit-btn {
+            width: 100%; padding: 15px; background: var(--accent); color: black; border: none; font-family: var(--header-font); font-size: 0.75rem; letter-spacing: 0.2em; cursor: pointer; text-transform: uppercase; font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            section { padding-top: 120px; text-align: center; justify-content: flex-start; gap: 40px;}
+            .nav-container { width: 95%; overflow-x: auto; top: 15px; }
+            .nav-btn { font-size: 0.55rem; padding: 8px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-overlay">
+        <video id="intro-video" autoplay muted playsinline>
+            <source src="https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/Avatar2.WebM" type="video/webm">
+        </video>
+        <button id="skip-intro" onclick="dismissIntro()">SKIP INTRO</button>
+    </div>
+
+    <nav class="nav-container">
+        <button class="nav-btn active" onclick="scrollToPage('page1')">Home</button>
+        <button class="nav-btn" onclick="scrollToPage('page2')">Configurator</button>
+        <button class="nav-btn" onclick="scrollToPage('page3')">AI Ads</button>
+        <button class="nav-btn" onclick="scrollToPage('page4')">Results</button>
+        <button class="nav-btn" onclick="scrollToPage('page5')">Connect</button>
+    </nav>
+
+    <section id="page1">
+        <div class="layer bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page1.jpg');"></div>
+        <h1 class="headline">The Future Of<br>Advertising Has Arrived</h1>
+        <div class="content-box">
+            <p class="body-text">The Conduit Collective is the <strong>Next Generation</strong> Digital Advertising Agency. We are Mobility Focused, powered by CAD-based Digital Twins, integrated into Real Time Configurators, and driven by Generative AI.</p>
+        </div>
+    </section>
+
+    <section id="page2">
+        <div class="layer bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page2.jpg');"></div>
+        <div class="layer character-layer" style="background-image: url('ACTION_REQUIRED_PAGE2_CHAR_URL');">
+            <div class="hotspot" style="top: 45%; left: 75%;" onclick="alert('Validate • Create • Interact • LoRA')">
+                <div class="hotspot-dot"><div class="hotspot-pulse"></div></div>
+            </div>
+        </div>
+        <h1 class="headline">One Configurator<br>Every Use Case</h1>
+        <div class="content-box">
+            <p class="body-text">Our process begins with Production Accurate CAD data, transformed into a <strong>High Fidelity Digital Twin</strong> and deployed within a Real Time Configurator.</p>
+        </div>
+    </section>
+
+    <section id="page3">
+        <div class="layer bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page3.jpg');"></div>
+        <div class="layer character-layer" style="background-image: url('ACTION_REQUIRED_PAGE3_CHAR_URL');">
+            <div class="hotspot" style="top: 50%; left: 65%;" onclick="alert('Print • Streaming • Digital • Social')">
+                <div class="hotspot-dot"><div class="hotspot-pulse"></div></div>
+            </div>
+        </div>
+        <h1 class="headline">State of the Art<br>Generative AI Advertising</h1>
+        <div class="content-box">
+            <p class="body-text">Our configurator trains a Branded AI Model that produces and distributes <strong>Product-Accurate content</strong> across Every Media Channel.</p>
+        </div>
+    </section>
+
+    <section id="page4">
+        <div class="layer bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page4.jpg');"></div>
+        <div class="layer character-layer" style="background-image: url('ACTION_REQUIRED_PAGE4_CHAR_URL');">
+            <div class="hotspot" style="top: 40%; left: 80%;" onclick="alert('Awareness • Connection • Conversion')">
+                <div class="hotspot-dot"><div class="hotspot-pulse"></div></div>
+            </div>
+        </div>
+        <h1 class="headline">One Funnel, One Cloud:<br>Measurable Results</h1>
+        <div class="content-box">
+            <p class="body-text">Every interaction—from Awareness to Conversion—is generated and measured from one <strong>Centralized Cloud</strong>.</p>
+        </div>
+    </section>
+
+    <section id="page5">
+        <div class="layer bg-layer" style="background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page5.jpg');"></div>
+        <h1 class="headline" style="text-align: center;">Let's Connect</h1>
+        <div class="form-container">
+            <form id="contactForm">
+                <div class="form-group"><label>Name</label><input type="text" required></div>
+                <div class="form-group"><label>Email</label><input type="email" required></div>
+                <div class="form-group"><label>Message</label><textarea rows="4" required></textarea></div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        // Intro Control
+        const introVideo = document.getElementById('intro-video');
+        const introOverlay = document.getElementById('intro-overlay');
+
+        introVideo.onended = () => { dismissIntro(); };
+
+        function dismissIntro() {
+            introOverlay.classList.add('intro-hidden');
+            setTimeout(() => { introOverlay.style.display = 'none'; }, 1000);
+        }
+
+        // Scrolling Control
+        function scrollToPage(pageId) {
+            dismissIntro();
+            document.getElementById(pageId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', () => {
+            const pages = ['page1', 'page2', 'page3', 'page4', 'page5'];
+            const navBtns = document.querySelectorAll('.nav-btn');
+            pages.forEach((pageId, index) => {
+                const element = document.getElementById(pageId);
+                const rect = element.getBoundingClientRect();
+                if (rect.top <= 200 && rect.bottom >= 200) {
+                    navBtns.forEach(btn => btn.classList.remove('active'));
+                    navBtns[index].classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
