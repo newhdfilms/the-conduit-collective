@@ -24,11 +24,11 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: rgba(255, 255, 255, 0.75); 
+            background: rgba(255, 255, 255, 0.7); /* Translucent White */
             backdrop-filter: blur(15px);
             transition: opacity 1.2s ease-in-out;
         }
-        .video-wrapper { position: relative; width: 100%; max-width: 900px; aspect-ratio: 16 / 9; background: #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .video-wrapper { position: relative; width: 100%; max-width: 900px; aspect-ratio: 16 / 9; background: #fff; }
         #player { width: 100%; height: 100%; pointer-events: none; border: none; }
         .intro-controls { margin-top: 30px; display: flex; gap: 15px; z-index: 10000; }
         .intro-btn {
@@ -60,70 +60,68 @@
         .headline {
             text-align: center; color: white; font-size: clamp(2rem, 5vw, 3.2rem);
             font-weight: bold; text-shadow: 0 4px 10px rgba(0,0,0,0.8); 
-            margin-bottom: auto; z-index: 5;
+            margin-bottom: auto; z-index: 10; /* Above overlay */
         }
 
-        /* LIGHTER TRANSLUCENT BODY TEXT BOXES */
         .body-text {
             color: white; font-size: 1.1rem; line-height: 1.7; text-align: center;
-            max-width: 1000px; padding: 30px 50px; 
-            background-color: rgba(0, 0, 0, 0.25); 
+            max-width: 950px; padding: 30px 50px; 
+            background-color: rgba(0, 0, 0, 0.25); /* 60% More Translucent */
             border-radius: 20px; backdrop-filter: blur(10px); 
-            border: 1px solid rgba(255,255,255,0.1);
-            z-index: 5;
+            border: 1px solid rgba(255,255,255,0.15);
+            z-index: 10; /* Above overlay */
         }
 
-        /* --- PAGE 3 SPIDER OVERLAY --- */
+        /* --- PAGE 3 SPIDER OVERLAY FIX --- */
+        #page3 { z-index: 1; }
         #page3::after {
             content: "";
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('page_3_Spider.png');
+            background-image: url('images/page_3_Spider.png');
             background-size: contain; background-repeat: no-repeat; background-position: center;
-            pointer-events: none; z-index: 2; opacity: 0.9;
+            pointer-events: none; 
+            z-index: 2; /* Between background and text */
+            opacity: 0.8;
         }
 
-        /* --- REELS DUAL CAROUSEL --- */
+        /* --- REELS CAROUSELS --- */
+        .reels-section { background-color: #050505; justify-content: flex-start !important; }
         .carousel-wrapper { width: 100%; max-width: 1400px; margin-bottom: 40px; position: relative; z-index: 10; }
         .carousel-track {
             display: flex; overflow-x: auto; gap: 20px; padding: 10px 0;
             scrollbar-width: none; scroll-snap-type: x mandatory;
         }
         .carousel-track::-webkit-scrollbar { display: none; }
-        
         .reel-item {
             flex: 0 0 75%; scroll-snap-align: center;
-            background: rgba(0,0,0,0.3); border-radius: 15px; padding: 10px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05); border-radius: 15px; padding: 10px; border: 1px solid rgba(255,255,255,0.1);
         }
-        @media (min-width: 900px) { .reel-item { flex: 0 0 500px; } }
-
+        @media (min-width: 900px) { .reel-item { flex: 0 0 480px; } }
         .reel-item iframe { width: 100%; aspect-ratio: 16/9; border-radius: 10px; border: none; }
         .reel-label { color: #ffeb64; font-size: 0.75rem; font-weight: bold; margin-top: 10px; text-align: center; text-transform: uppercase; }
-
-        .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+        .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
         .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s; }
-        .dot.active { background: #ffeb64; transform: scale(1.3); }
+        .dot.active { background: #ffeb64; transform: scale(1.2); }
 
-        /* --- RESTORED CONTACT FORM --- */
-        .form-container {
-            background-color: rgba(0, 0, 0, 0.25);
-            padding: 40px; border-radius: 20px; width: 100%; max-width: 500px;
-            border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+        /* --- ORIGINAL CONTACT FORM LAYOUT --- */
+        .contact-container {
+            width: 100%; max-width: 550px; background-color: rgba(0, 0, 0, 0.25); 
+            padding: 40px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);
         }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; color: white; margin-bottom: 8px; font-size: 0.9rem; font-weight: 600; }
         .form-group input, .form-group textarea {
-            width: 100%; padding: 14px; border-radius: 8px; border: none; background: rgba(255,255,255,0.95);
+            width: 100%; padding: 15px; border-radius: 10px; border: none; background: rgba(255,255,255,0.95); font-size: 1rem;
         }
         .submit-btn {
-            width: 100%; padding: 16px; background: #ffeb64; border: none; border-radius: 8px; 
-            font-weight: bold; cursor: pointer; font-size: 1rem; transition: 0.3s;
+            width: 100%; padding: 18px; background: #ffeb64; border: none; border-radius: 10px; 
+            font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: 0.3s;
         }
 
         #page1 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page1.jpg'); }
         #page2 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page2.jpg'); }
         #page3 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page3.jpg'); }
         #page4 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page4.jpg'); }
-        #reels { background-color: #050505; justify-content: flex-start !important; }
         #page5 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page5.jpg'); justify-content: center; }
     </style>
 </head>
@@ -166,24 +164,24 @@
         <div class="body-text">Every interaction—from Awareness to Consideration, Connection to Conversion—is generated, distributed, and measured from one Centralized Cloud, enabling Precise Attribution and Direct Correlation to Retail Outcomes.</div>
     </section>
 
-    <section id="reels" class="page">
+    <section id="reels" class="page reels-section">
         <h1 class="headline" style="margin-bottom: 40px;">AI Generated Reels</h1>
         <div class="carousel-wrapper">
             <div class="carousel-track" id="track1">
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/qMrQIKzTXWM" frameborder="0"></iframe><div class="reel-label">Conduit Collective Reel</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/Fa_qozZo8QU" frameborder="0"></iframe><div class="reel-label">Save the Robots</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/odTiZQI60fs" frameborder="0"></iframe><div class="reel-label">Dogged Vine Winery</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/o1Mif0xfzvU" frameborder="0"></iframe><div class="reel-label">Dogged Vine Winery 2</div></div>
+                <div class="reel-item"><iframe src="https://www.youtube.com/embed/qMrQIKzTXWM" frameborder="0" allowfullscreen></iframe><div class="reel-label">Conduit Collective Reel</div></div>
+                <div class="reel-item"><iframe src="https://www.youtube.com/embed/Fa_qozZo8QU" frameborder="0" allowfullscreen></iframe><div class="reel-label">Save the Robots</div></div>
+                <div class="reel-item"><iframe src="https://www.youtube.com/embed/odTiZQI60fs" frameborder="0" allowfullscreen></iframe><div class="reel-label">Dogged Vine Winery</div></div>
+                <div class="reel-item"><iframe src="https://www.youtube.com/embed/o1Mif0xfzvU" frameborder="0" allowfullscreen></iframe><div class="reel-label">Dogged Vine Winery 2</div></div>
             </div>
             <div class="carousel-dots" id="dots1"></div>
         </div>
         <div class="carousel-wrapper">
             <div class="carousel-track" id="track2">
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/trnBZc4eVPc" frameborder="0"></iframe><div class="reel-label">Culture Pop Soda</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/j5KvO62Nkak" frameborder="0"></iframe><div class="reel-label">Scrubby the Bubble</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/zossDzY27qk" frameborder="0"></iframe><div class="reel-label">Gangsta Music Video</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/QfGLgfSaT40" frameborder="0"></iframe><div class="reel-label">Penn State Promo</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/03kmgB702wk" frameborder="0"></iframe><div class="reel-label">Clean Air Project</div></div>
+                <div class="reel-item"><iframe src="https://www.youtube.com/embed/trnBZc4eVPc" frameborder="0" allowfullscreen></iframe><div class="reel-label">Culture Pop Soda</div></div>
+                <div class="reel-item"><iframe src="https://www.youtube.com/embed/j5KvO62Nkak" frameborder="0" allowfullscreen></iframe><div class="reel-label">Scrubby the Bubble</div></div>
+                <div class="reel-item"><iframe src="https://www.youtube.com/embed/zossDzY27qk" frameborder="0" allowfullscreen></iframe><div class="reel-label">Gangsta Music Video</div></div>
+                <div class="reel-item"><iframe src="https://www.youtube.com/embed/QfGLgfSaT40" frameborder="0" allowfullscreen></iframe><div class="reel-label">Penn State Promo</div></div>
+                <div class="reel-item"><iframe src="https://www.youtube.com/embed/03kmgB702wk" frameborder="0" allowfullscreen></iframe><div class="reel-label">Clean Air Project</div></div>
             </div>
             <div class="carousel-dots" id="dots2"></div>
         </div>
@@ -191,11 +189,11 @@
 
     <section id="page5" class="page">
         <h1 class="headline">Let's Connect</h1>
-        <div class="form-container">
+        <div class="contact-container">
             <form id="contactForm">
-                <div class="form-group"><label>Name *</label><input type="text" required></div>
-                <div class="form-group"><label>Email *</label><input type="email" required></div>
-                <div class="form-group"><label>Message *</label><textarea rows="4" required></textarea></div>
+                <div class="form-group"><label>Name *</label><input type="text" required placeholder="Full Name"></div>
+                <div class="form-group"><label>Email *</label><input type="email" required placeholder="Email Address"></div>
+                <div class="form-group"><label>Message *</label><textarea rows="5" required placeholder="Your Message"></textarea></div>
                 <button type="submit" class="submit-btn">Send Message</button>
             </form>
         </div>
@@ -227,7 +225,6 @@
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
         }
-
         function setupDots(trackId, dotsId) {
             const track = document.getElementById(trackId);
             const dotsContainer = document.getElementById(dotsId);
