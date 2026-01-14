@@ -22,9 +22,9 @@
             z-index: 9999;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify(content: center;
             align-items: center;
-            background: rgba(255, 255, 255, 0.7); /* Translucent White */
+            background: rgba(255, 255, 255, 0.7); 
             backdrop-filter: blur(15px);
             transition: opacity 1.2s ease-in-out;
         }
@@ -38,15 +38,25 @@
         .intro-btn:hover { background-color: #ffeb64; color: #000; }
         .intro-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         
-        /* --- NAVIGATION --- */
+        /* --- UPDATED RESPONSIVE NAVIGATION --- */
         .nav-container {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 1000; display: flex; gap: 10px; width: auto; max-width: 95%;
+            z-index: 1000; display: flex; gap: 8px; width: 90%; max-width: 600px;
+            justify-content: center;
+            overflow-x: auto; /* Allows swiping if buttons overflow */
+            padding: 5px;
+            scrollbar-width: none; /* Hide scrollbar for clean look */
         }
+        .nav-container::-webkit-scrollbar { display: none; }
+
         .nav-btn {
             background-color: rgba(255, 255, 255, 0.9); color: black; border: none;
-            padding: 10px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;
+            padding: 8px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 600;
             cursor: pointer; transition: 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            white-space: nowrap; /* Prevents text like "Configurator" from breaking */
+        }
+        @media (min-width: 600px) {
+            .nav-btn { padding: 10px 18px; font-size: 0.85rem; }
         }
         .nav-btn.active { background-color: #ffeb64; }
 
@@ -58,30 +68,28 @@
         }
 
         .headline {
-            text-align: center; color: white; font-size: clamp(2rem, 5vw, 3.2rem);
+            text-align: center; color: white; font-size: clamp(1.8rem, 5vw, 3.2rem);
             font-weight: bold; text-shadow: 0 4px 10px rgba(0,0,0,0.8); 
-            margin-bottom: auto; z-index: 10; /* Above overlay */
+            margin-bottom: auto; z-index: 10;
         }
 
         .body-text {
             color: white; font-size: 1.1rem; line-height: 1.7; text-align: center;
             max-width: 950px; padding: 30px 50px; 
-            background-color: rgba(0, 0, 0, 0.25); /* 60% More Translucent */
+            background-color: rgba(0, 0, 0, 0.25); 
             border-radius: 20px; backdrop-filter: blur(10px); 
             border: 1px solid rgba(255,255,255,0.15);
-            z-index: 10; /* Above overlay */
+            z-index: 10;
         }
 
-        /* --- PAGE 3 SPIDER OVERLAY FIX --- */
+        /* --- PAGE 3 SPIDER OVERLAY --- */
         #page3 { z-index: 1; }
         #page3::after {
             content: "";
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('images/page_3_Spider.png');
             background-size: contain; background-repeat: no-repeat; background-position: center;
-            pointer-events: none; 
-            z-index: 2; /* Between background and text */
-            opacity: 0.8;
+            pointer-events: none; z-index: 2; opacity: 0.8;
         }
 
         /* --- REELS CAROUSELS --- */
@@ -103,10 +111,10 @@
         .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s; }
         .dot.active { background: #ffeb64; transform: scale(1.2); }
 
-        /* --- ORIGINAL CONTACT FORM LAYOUT --- */
+        /* --- CONTACT FORM --- */
         .contact-container {
             width: 100%; max-width: 550px; background-color: rgba(0, 0, 0, 0.25); 
-            padding: 40px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            padding: 30px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);
         }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; color: white; margin-bottom: 8px; font-size: 0.9rem; font-weight: 600; }
@@ -130,7 +138,7 @@
     <div id="intro-overlay">
         <div class="video-wrapper"><div id="player"></div></div>
         <div class="intro-controls">
-            <button class="intro-btn" id="mute-btn" onclick="toggleMute()">🔊 Play Audio</button>
+            <button class="intro-btn" id="mute-btn" onclick="toggleMute()">Play Audio</button>
             <button class="intro-btn" onclick="dismissIntro()">Skip Intro</button>
         </div>
     </div>
@@ -161,7 +169,7 @@
 
     <section id="page4" class="page">
         <h1 class="headline">One Funnel, One Cloud:<br>Measurable Metrix</h1>
-        <div class="body-text">Every interaction—from Awareness to Consideration, Connection to Conversion—is generated, distributed, and measured from one Centralized Cloud, enabling Precise Attribution and Direct Correlation to Retail Outcomes.</div>
+        <div class="body-text">Every interaction from Awareness to Consideration, Connection to Conversion is generated, distributed, and measured from one Centralized Cloud, enabling Precise Attribution and Direct Correlation to Retail Outcomes.</div>
     </section>
 
     <section id="reels" class="page reels-section">
@@ -211,8 +219,8 @@
         }
         function toggleMute() {
             const btn = document.getElementById('mute-btn');
-            if (player.isMuted()) { player.unMute(); btn.innerText = "🔇 Mute Audio"; }
-            else { player.mute(); btn.innerText = "🔊 Play Audio"; }
+            if (player.isMuted()) { player.unMute(); btn.innerText = "Mute Audio"; }
+            else { player.mute(); btn.innerText = "Play Audio"; }
         }
         function dismissIntro() {
             const overlay = document.getElementById('intro-overlay');
