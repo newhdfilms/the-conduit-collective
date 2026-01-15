@@ -14,10 +14,7 @@
             background-color: #000;
         }
 
-        /* Prevent scrolling when intro is active */
-        body.intro-active {
-            overflow: hidden;
-        }
+        body.intro-active { overflow: hidden; }
 
         /* --- TRANSLUCENT INTRO OVERLAY --- */
         #intro-overlay {
@@ -29,7 +26,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: rgba(255, 255, 255, 0.75); /* Restored Translucent White */
+            background: rgba(255, 255, 255, 0.75); 
             backdrop-filter: blur(15px);
             transition: opacity 1.2s ease-in-out;
         }
@@ -43,22 +40,36 @@
         .intro-btn:hover { background-color: #ffeb64; color: #000; }
         .intro-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         
-        /* --- MOBILE-FRIENDLY NAVIGATION --- */
+        /* --- NEW 3-BUTTON NAVIGATION & DROPDOWN --- */
         .nav-container {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 1000; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; 
-            width: 95%; max-width: 800px; padding: 10px;
+            z-index: 1000; display: flex; gap: 8px; 
+            width: auto; padding: 10px;
         }
         .nav-btn {
             background-color: rgba(255, 255, 255, 0.9); color: black; border: none;
-            padding: 8px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 600;
+            padding: 10px 20px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;
             cursor: pointer; transition: 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             white-space: nowrap;
         }
-        @media (min-width: 600px) {
-            .nav-btn { padding: 10px 18px; font-size: 0.85rem; }
+        /* Royal Blue / Red Highlight */
+        .nav-btn.active { background-color: #4169E1; color: #FF0000; }
+
+        /* Dropdown Menu Styling */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; top: 110%; left: 0;
+            background-color: rgba(255, 255, 255, 0.95); min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2); border-radius: 15px;
+            overflow: hidden; z-index: 1001;
         }
-        .nav-btn.active { background-color: #ffeb64; }
+        .dropdown-content button {
+            width: 100%; padding: 12px 16px; border: none; background: none;
+            text-align: left; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            transition: 0.2s; border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .dropdown-content button:hover { background-color: #4169E1; color: white; }
+        .dropdown:hover .dropdown-content { display: block; }
 
         /* --- PAGE LAYOUT --- */
         .page {
@@ -66,13 +77,11 @@
             position: relative; display: flex; flex-direction: column; align-items: center;
             padding: 120px 20px 80px 20px;
         }
-
         .headline {
             text-align: center; color: white; font-size: clamp(1.8rem, 5vw, 3.2rem);
             font-weight: bold; text-shadow: 0 4px 10px rgba(0,0,0,0.8); 
             margin-bottom: auto; z-index: 10;
         }
-
         .body-text {
             color: white; font-size: 1.1rem; line-height: 1.7; text-align: center;
             max-width: 950px; padding: 30px 50px; 
@@ -144,12 +153,19 @@
     </div>
 
     <div class="nav-container">
-        <button class="nav-btn active" onclick="scrollToPage('page1', this)">Home</button>
-        <button class="nav-btn" onclick="scrollToPage('page2', this)">Configurator</button>
-        <button class="nav-btn" onclick="scrollToPage('page3', this)">Media</button>
-        <button class="nav-btn" onclick="scrollToPage('page4', this)">Metrix</button>
-        <button class="nav-btn" onclick="scrollToPage('reels', this)">Reels</button>
-        <button class="nav-btn" onclick="scrollToPage('page5', this)">Contact</button>
+        <div class="dropdown">
+            <button class="nav-btn" id="process-btn">Process ▾</button>
+            <div class="dropdown-content">
+                <button onclick="scrollToPage('page1')">About</button>
+                <button onclick="scrollToPage('page2')">Configurator</button>
+                <button onclick="scrollToPage('page3')">Media</button>
+                <button onclick="scrollToPage('page4')">Metrics</button>
+                <button onclick="scrollToPage('reels')">Reels</button>
+                <button onclick="scrollToPage('page5')">Contact</button>
+            </div>
+        </div>
+        <button class="nav-btn" id="reels-nav" onclick="scrollToPage('reels', this)">Reels</button>
+        <button class="nav-btn" id="contact-nav" onclick="scrollToPage('page5', this)">Contact</button>
     </div>
 
     <section id="page1" class="page">
@@ -168,7 +184,7 @@
     </section>
 
     <section id="page4" class="page">
-        <h1 class="headline">One Funnel, One Cloud:<br>Measurable Metrix</h1>
+        <h1 class="headline">One Funnel, One Cloud:<br>Measurable Metrics</h1>
         <div class="body-text">Every interaction from Awareness to Consideration, Connection to Conversion is generated, distributed, and measured from one Centralized Cloud, enabling Precise Attribution and Direct Correlation to Retail Outcomes.</div>
     </section>
 
@@ -231,8 +247,18 @@
         function scrollToPage(pageId, btn) {
             if(!document.getElementById('intro-overlay').classList.contains('intro-hidden')) dismissIntro();
             document.getElementById(pageId).scrollIntoView({ behavior: 'smooth' });
+            
+            // Highlight logic
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            if(btn) btn.classList.add('active');
+            if(btn) {
+                btn.classList.add('active');
+            } else if (pageId === 'reels') {
+                document.getElementById('reels-nav').classList.add('active');
+            } else if (pageId === 'page5') {
+                document.getElementById('contact-nav').classList.add('active');
+            } else {
+                document.getElementById('process-btn').classList.add('active');
+            }
         }
         function setupDots(trackId, dotsId) {
             const track = document.getElementById(trackId);
