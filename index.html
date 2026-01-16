@@ -14,7 +14,7 @@
             background-color: #000;
         }
 
-        body.intro-active { overflow: hidden; }
+        body.intro-active, body.modal-active { overflow: hidden; }
 
         /* --- TRANSLUCENT INTRO OVERLAY --- */
         #intro-overlay {
@@ -96,7 +96,7 @@
             pointer-events: none; z-index: 2; opacity: 0.8;
         }
 
-        /* --- REELS --- */
+        /* --- REELS WITH EXPAND FEATURE --- */
         .carousel-wrapper { width: 100%; max-width: 1400px; margin-bottom: 40px; position: relative; z-index: 10; }
         .carousel-track {
             display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 10px 0;
@@ -106,13 +106,30 @@
         .reel-item {
             flex: 0 0 85%; scroll-snap-align: center;
             background: rgba(255,255,255,0.05); border-radius: 15px; padding: 10px; border: 1px solid rgba(255,255,255,0.1);
+            cursor: zoom-in; position: relative;
         }
+        .reel-item::after {
+            content: "Click to Expand"; position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6);
+            color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.6rem; opacity: 0; transition: 0.3s;
+        }
+        .reel-item:hover::after { opacity: 1; }
+
         @media (min-width: 900px) { .reel-item { flex: 0 0 500px; } }
-        .reel-item iframe { width: 100%; aspect-ratio: 16/9; border-radius: 10px; border: none; }
+        .reel-item iframe { width: 100%; aspect-ratio: 16/9; border-radius: 10px; border: none; pointer-events: none; }
         .reel-label { color: #ffeb64; font-size: 0.75rem; font-weight: bold; margin-top: 10px; text-align: center; text-transform: uppercase; }
-        .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
-        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s; }
-        .dot.active { background: #ffeb64; transform: scale(1.2); }
+        
+        /* --- VIDEO MODAL (EXPANDED PLAYER) --- */
+        #video-modal {
+            position: fixed; top:0; left:0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.95); z-index: 11000; display: none;
+            justify-content: center; align-items: center; opacity: 0; transition: opacity 0.4s;
+        }
+        #video-modal.active { display: flex; opacity: 1; }
+        .modal-content { width: 90%; max-width: 1100px; aspect-ratio: 16/9; position: relative; }
+        .close-modal {
+            position: absolute; top: -40px; right: 0; color: white; font-size: 2rem;
+            cursor: pointer; font-weight: bold;
+        }
 
         /* --- CONTACT --- */
         .contact-container {
@@ -145,6 +162,13 @@
         <div class="intro-controls">
             <button class="intro-btn" id="mute-btn" onclick="toggleMute()">🔊 Play Audio</button>
             <button class="intro-btn" onclick="dismissIntro()">Skip Intro</button>
+        </div>
+    </div>
+
+    <div id="video-modal" onclick="closeVideo()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-modal">&times;</span>
+            <iframe id="expanded-player" width="100%" height="100%" src="" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
         </div>
     </div>
 
@@ -186,22 +210,20 @@
         <h1 class="headline">AI Generated Reels</h1>
         <div class="carousel-wrapper">
             <div class="carousel-track" id="track1">
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/qMrQIKzTXWM" frameborder="0" allowfullscreen></iframe><div class="reel-label">Conduit Collective Reel</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/Fa_qozZo8QU" frameborder="0" allowfullscreen></iframe><div class="reel-label">Save the Robots</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/odTiZQI60fs" frameborder="0" allowfullscreen></iframe><div class="reel-label">Dogged Vine Winery</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/o1Mif0xfzvU" frameborder="0" allowfullscreen></iframe><div class="reel-label">Dogged Vine Winery 2</div></div>
+                <div class="reel-item" onclick="expandVideo('qMrQIKzTXWM')"><iframe src="https://www.youtube.com/embed/qMrQIKzTXWM?controls=0" frameborder="0"></iframe><div class="reel-label">Conduit Collective Reel</div></div>
+                <div class="reel-item" onclick="expandVideo('Fa_qozZo8QU')"><iframe src="https://www.youtube.com/embed/Fa_qozZo8QU?controls=0" frameborder="0"></iframe><div class="reel-label">Save the Robots</div></div>
+                <div class="reel-item" onclick="expandVideo('odTiZQI60fs')"><iframe src="https://www.youtube.com/embed/odTiZQI60fs?controls=0" frameborder="0"></iframe><div class="reel-label">Dogged Vine Winery</div></div>
+                <div class="reel-item" onclick="expandVideo('o1Mif0xfzvU')"><iframe src="https://www.youtube.com/embed/o1Mif0xfzvU?controls=0" frameborder="0"></iframe><div class="reel-label">Dogged Vine Winery 2</div></div>
             </div>
-            <div class="carousel-dots" id="dots1"></div>
         </div>
         <div class="carousel-wrapper">
             <div class="carousel-track" id="track2">
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/trnBZc4eVPc" frameborder="0" allowfullscreen></iframe><div class="reel-label">Culture Pop Soda</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/j5KvO62Nkak" frameborder="0" allowfullscreen></iframe><div class="reel-label">Scrubby the Bubble</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/zossDzY27qk" frameborder="0" allowfullscreen></iframe><div class="reel-label">Gangsta Music Video</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/QfGLgfSaT40" frameborder="0" allowfullscreen></iframe><div class="reel-label">Penn State Promo</div></div>
-                <div class="reel-item"><iframe src="https://www.youtube.com/embed/03kmgB702wk" frameborder="0" allowfullscreen></iframe><div class="reel-label">Clean Air Project</div></div>
+                <div class="reel-item" onclick="expandVideo('trnBZc4eVPc')"><iframe src="https://www.youtube.com/embed/trnBZc4eVPc?controls=0" frameborder="0"></iframe><div class="reel-label">Culture Pop Soda</div></div>
+                <div class="reel-item" onclick="expandVideo('j5KvO62Nkak')"><iframe src="https://www.youtube.com/embed/j5KvO62Nkak?controls=0" frameborder="0"></iframe><div class="reel-label">Scrubby the Bubble</div></div>
+                <div class="reel-item" onclick="expandVideo('zossDzY27qk')"><iframe src="https://www.youtube.com/embed/zossDzY27qk?controls=0" frameborder="0"></iframe><div class="reel-label">Gangsta Music Video</div></div>
+                <div class="reel-item" onclick="expandVideo('QfGLgfSaT40')"><iframe src="https://www.youtube.com/embed/QfGLgfSaT40?controls=0" frameborder="0"></iframe><div class="reel-label">Penn State Promo</div></div>
+                <div class="reel-item" onclick="expandVideo('03kmgB702wk')"><iframe src="https://www.youtube.com/embed/03kmgB702wk?controls=0" frameborder="0"></iframe><div class="reel-label">Clean Air Project</div></div>
             </div>
-            <div class="carousel-dots" id="dots2"></div>
         </div>
     </section>
 
@@ -240,8 +262,8 @@
         }
         function toggleMute() {
             const btn = document.getElementById('mute-btn');
-            if (player.isMuted()) { player.unMute(); btn.innerText = "🔇 Mute Audio"; }
-            else { player.mute(); btn.innerText = "🔊 Play Audio"; }
+            if (player.isMuted()) { player.unMute(); btn.innerText = "Mute Audio"; }
+            else { player.mute(); btn.innerText = "Play Audio"; }
         }
         function dismissIntro() {
             const overlay = document.getElementById('intro-overlay');
@@ -257,13 +279,6 @@
             document.getElementById('sub-menu').classList.toggle('expanded');
         }
 
-        window.addEventListener('scroll', () => {
-            const subMenu = document.getElementById('sub-menu');
-            if (subMenu && subMenu.classList.contains('expanded')) {
-                subMenu.classList.remove('expanded');
-            }
-        });
-
         function scrollToPage(pageId, btn) {
             const subMenu = document.getElementById('sub-menu');
             if (subMenu) subMenu.classList.remove('expanded');
@@ -273,25 +288,22 @@
             if(btn) btn.classList.add('active');
         }
 
-        function setupDots(trackId, dotsId) {
-            const track = document.getElementById(trackId);
-            const dotsContainer = document.getElementById(dotsId);
-            if(!track || !dotsContainer) return;
-            const items = track.querySelectorAll('.reel-item');
-            items.forEach((_, i) => {
-                const dot = document.createElement('div');
-                dot.classList.add('dot');
-                if(i === 0) dot.classList.add('active');
-                dotsContainer.appendChild(dot);
-            });
-            track.addEventListener('scroll', () => {
-                const index = Math.round(track.scrollLeft / (items[0].offsetWidth + 20));
-                const dots = dotsContainer.querySelectorAll('.dot');
-                dots.forEach((d, i) => d.classList.toggle('active', i === index));
-            });
+        // --- EXPANDED VIDEO LOGIC ---
+        function expandVideo(id) {
+            const modal = document.getElementById('video-modal');
+            const iframe = document.getElementById('expanded-player');
+            iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&controls=1`;
+            modal.classList.add('active');
+            document.body.classList.add('modal-active');
         }
-        setupDots('track1', 'dots1');
-        setupDots('track2', 'dots2');
+
+        function closeVideo() {
+            const modal = document.getElementById('video-modal');
+            const iframe = document.getElementById('expanded-player');
+            iframe.src = "";
+            modal.classList.remove('active');
+            document.body.classList.remove('modal-active');
+        }
     </script>
 </body>
 </html>
