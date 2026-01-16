@@ -16,7 +16,7 @@
 
         body.intro-active, body.modal-active { overflow: hidden; }
 
-        /* --- TRANSLUCENT INTRO OVERLAY --- */
+        /* --- INTRO OVERLAY --- */
         #intro-overlay {
             position: fixed;
             top: 0; left: 0; 
@@ -84,52 +84,56 @@
         }
 
         .reels-section, #page5 { padding-top: 140px; justify-content: flex-start; }
-        .reels-section .headline, #page5 .headline { margin-bottom: 40px; }
+        .reels-section .headline { margin-bottom: 40px; }
         #page5 { justify-content: center; }
 
-        /* --- PAGE 3 SPIDER OVERLAY --- */
-        #page3::after {
-            content: "";
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('images/page_3_Spider.png');
-            background-size: contain; background-repeat: no-repeat; background-position: center;
-            pointer-events: none; z-index: 2; opacity: 0.8;
-        }
-
-        /* --- REELS WITH EXPAND FEATURE --- */
+        /* --- REELS CAROUSELS --- */
         .carousel-wrapper { width: 100%; max-width: 1400px; margin-bottom: 40px; position: relative; z-index: 10; }
         .carousel-track {
             display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 10px 0;
             scrollbar-width: none; scroll-snap-type: x mandatory;
         }
         .carousel-track::-webkit-scrollbar { display: none; }
+        
         .reel-item {
             flex: 0 0 85%; scroll-snap-align: center;
             background: rgba(255,255,255,0.05); border-radius: 15px; padding: 10px; border: 1px solid rgba(255,255,255,0.1);
-            cursor: zoom-in; position: relative;
+            cursor: pointer; position: relative;
         }
-        .reel-item::after {
-            content: "Click to Expand"; position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6);
-            color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.6rem; opacity: 0; transition: 0.3s;
-        }
-        .reel-item:hover::after { opacity: 1; }
-
         @media (min-width: 900px) { .reel-item { flex: 0 0 500px; } }
+        
         .reel-item iframe { width: 100%; aspect-ratio: 16/9; border-radius: 10px; border: none; pointer-events: none; }
         .reel-label { color: #ffeb64; font-size: 0.75rem; font-weight: bold; margin-top: 10px; text-align: center; text-transform: uppercase; }
         
-        /* --- VIDEO MODAL (EXPANDED PLAYER) --- */
+        /* --- VIDEO MODAL (FIXED) --- */
         #video-modal {
             position: fixed; top:0; left:0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.95); z-index: 11000; display: none;
-            justify-content: center; align-items: center; opacity: 0; transition: opacity 0.4s;
+            background: rgba(0,0,0,0.92); z-index: 20000; /* Extremely high z-index */
+            display: none; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease;
+            cursor: default;
         }
         #video-modal.active { display: flex; opacity: 1; }
-        .modal-content { width: 90%; max-width: 1100px; aspect-ratio: 16/9; position: relative; }
-        .close-modal {
-            position: absolute; top: -40px; right: 0; color: white; font-size: 2rem;
-            cursor: pointer; font-weight: bold;
+        
+        .modal-content { 
+            width: 90%; max-width: 1100px; aspect-ratio: 16/9; 
+            position: relative; box-shadow: 0 0 50px rgba(0,0,0,1);
+            z-index: 20001;
         }
+        
+        .close-modal {
+            position: absolute; 
+            top: -50px; right: 0; 
+            color: #ffeb64; 
+            font-size: 3rem; 
+            cursor: pointer; 
+            font-weight: 300;
+            line-height: 1;
+            z-index: 20002;
+            padding: 10px;
+            transition: transform 0.2s;
+        }
+        .close-modal:hover { transform: scale(1.1); color: #fff; }
 
         /* --- CONTACT --- */
         .contact-container {
@@ -167,7 +171,7 @@
 
     <div id="video-modal" onclick="closeVideo()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="close-modal">&times;</span>
+            <span class="close-modal" onclick="closeVideo()">&times;</span>
             <iframe id="expanded-player" width="100%" height="100%" src="" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
         </div>
     </div>
@@ -209,7 +213,7 @@
     <section id="reels" class="page reels-section">
         <h1 class="headline">AI Generated Reels</h1>
         <div class="carousel-wrapper">
-            <div class="carousel-track" id="track1">
+            <div class="carousel-track">
                 <div class="reel-item" onclick="expandVideo('qMrQIKzTXWM')"><iframe src="https://www.youtube.com/embed/qMrQIKzTXWM?controls=0" frameborder="0"></iframe><div class="reel-label">Conduit Collective Reel</div></div>
                 <div class="reel-item" onclick="expandVideo('Fa_qozZo8QU')"><iframe src="https://www.youtube.com/embed/Fa_qozZo8QU?controls=0" frameborder="0"></iframe><div class="reel-label">Save the Robots</div></div>
                 <div class="reel-item" onclick="expandVideo('odTiZQI60fs')"><iframe src="https://www.youtube.com/embed/odTiZQI60fs?controls=0" frameborder="0"></iframe><div class="reel-label">Dogged Vine Winery</div></div>
@@ -217,7 +221,7 @@
             </div>
         </div>
         <div class="carousel-wrapper">
-            <div class="carousel-track" id="track2">
+            <div class="carousel-track">
                 <div class="reel-item" onclick="expandVideo('trnBZc4eVPc')"><iframe src="https://www.youtube.com/embed/trnBZc4eVPc?controls=0" frameborder="0"></iframe><div class="reel-label">Culture Pop Soda</div></div>
                 <div class="reel-item" onclick="expandVideo('j5KvO62Nkak')"><iframe src="https://www.youtube.com/embed/j5KvO62Nkak?controls=0" frameborder="0"></iframe><div class="reel-label">Scrubby the Bubble</div></div>
                 <div class="reel-item" onclick="expandVideo('zossDzY27qk')"><iframe src="https://www.youtube.com/embed/zossDzY27qk?controls=0" frameborder="0"></iframe><div class="reel-label">Gangsta Music Video</div></div>
@@ -262,8 +266,8 @@
         }
         function toggleMute() {
             const btn = document.getElementById('mute-btn');
-            if (player.isMuted()) { player.unMute(); btn.innerText = "Mute Audio"; }
-            else { player.mute(); btn.innerText = "Play Audio"; }
+            if (player.isMuted()) { player.unMute(); btn.innerText = "🔇 Mute Audio"; }
+            else { player.mute(); btn.innerText = "🔊 Play Audio"; }
         }
         function dismissIntro() {
             const overlay = document.getElementById('intro-overlay');
@@ -288,22 +292,31 @@
             if(btn) btn.classList.add('active');
         }
 
-        // --- EXPANDED VIDEO LOGIC ---
+        // --- IMPROVED VIDEO MODAL LOGIC ---
         function expandVideo(id) {
             const modal = document.getElementById('video-modal');
             const iframe = document.getElementById('expanded-player');
-            iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&controls=1`;
-            modal.classList.add('active');
+            iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&controls=1&rel=0`;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
             document.body.classList.add('modal-active');
         }
 
         function closeVideo() {
             const modal = document.getElementById('video-modal');
             const iframe = document.getElementById('expanded-player');
-            iframe.src = "";
             modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                iframe.src = "";
+            }, 300);
             document.body.classList.remove('modal-active');
         }
+
+        // Listen for ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeVideo();
+        });
     </script>
 </body>
 </html>
