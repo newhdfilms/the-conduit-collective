@@ -46,33 +46,21 @@
             z-index: 1000; display: flex; flex-direction: column; align-items: center; gap: 10px;
             width: 95%; max-width: 800px;
         }
-
-        .primary-nav {
-            display: flex; gap: 8px; justify-content: center;
-        }
-
+        .primary-nav { display: flex; gap: 8px; justify-content: center; }
         .secondary-nav {
             display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
             max-height: 0; opacity: 0; transform: scale(0.9);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
         }
-
-        .secondary-nav.expanded {
-            max-height: 200px; opacity: 1; transform: scale(1);
-            pointer-events: auto; margin-top: 5px;
-        }
-
+        .secondary-nav.expanded { max-height: 200px; opacity: 1; transform: scale(1); pointer-events: auto; margin-top: 5px; }
         .nav-btn {
             background-color: rgba(255, 255, 255, 0.9); color: black; border: none;
             padding: 10px 18px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;
             cursor: pointer; transition: 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             white-space: nowrap;
         }
-
-        /* Royal Blue background with Red text for active states */
         .nav-btn.active { background-color: #4169E1 !important; color: #FF0000 !important; }
-        .nav-btn:hover { background-color: #f0f0f0; }
 
         /* --- PAGE LAYOUT --- */
         .page {
@@ -84,6 +72,7 @@
             text-align: center; color: white; font-size: clamp(1.8rem, 5vw, 3.2rem);
             font-weight: bold; text-shadow: 0 4px 10px rgba(0,0,0,0.8); 
             margin-bottom: auto; z-index: 10;
+            width: 100%; max-width: 1200px; /* Ensures desktop doesn't wrap too early */
         }
         .body-text {
             color: white; font-size: 1.1rem; line-height: 1.7; text-align: center;
@@ -122,7 +111,24 @@
         .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s; }
         .dot.active { background: #ffeb64; transform: scale(1.2); }
 
-        /* Background Images */
+        /* --- RESTORED CONTACT FORM --- */
+        .contact-container {
+            width: 100%; max-width: 600px; background-color: rgba(0, 0, 0, 0.4); 
+            padding: 40px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(15px);
+            z-index: 10;
+        }
+        .form-group { margin-bottom: 25px; text-align: left; }
+        .form-group label { display: block; color: white; margin-bottom: 10px; font-size: 0.95rem; font-weight: 600; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 15px; border-radius: 12px; border: none; background: rgba(255,255,255,0.95); font-size: 1rem;
+        }
+        .submit-btn {
+            width: 100%; padding: 20px; background: #ffeb64; border: none; border-radius: 12px; 
+            font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: 0.3s;
+        }
+        .submit-btn:hover { background: #ffd700; transform: translateY(-2px); }
+
+        /* Section Backgrounds */
         #page1 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page1.jpg'); }
         #page2 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page2.jpg'); }
         #page3 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page3.jpg'); }
@@ -155,22 +161,22 @@
     </div>
 
     <section id="page1" class="page">
-        <h1 class="headline">The Future of Advertising<br>has Arrived</h1>
+        <h1 class="headline">The Future of Advertising has Arrived</h1>
         <div class="body-text">The Conduit Collective is the Next Generation Digital Advertising Agency. Mobility Focused, powered by CAD-based Digital Twins, integrated into Real Time Configurators, and driven by Generative AI.</div>
     </section>
 
     <section id="page2" class="page">
-        <h1 class="headline">One Configurator<br>Every Use Case</h1>
+        <h1 class="headline">One Configurator Every Use Case</h1>
         <div class="body-text">Our process begins with Production Accurate CAD data, transformed into a High Fidelity Digital Twin and deployed within a Real Time Configurator. This single system supports internal Product Validation, high-end Creative Development, and downstream AI LoRA Model Training.</div>
     </section>
 
     <section id="page3" class="page">
-        <h1 class="headline">State of the Art<br>Generative AI Media</h1>
+        <h1 class="headline">State of the Art Generative AI Media</h1>
         <div class="body-text">Our configurator trains a Branded AI Model that produces and distributes Product-Accurate, Photorealistic Content across Every Media Channel from a Centralized Cloud. Unmatched Scalability and Speed to Market.</div>
     </section>
 
     <section id="page4" class="page">
-        <h1 class="headline">One Funnel, One Cloud:<br>Measurable Metrics</h1>
+        <h1 class="headline">One Funnel, One Cloud: Measurable Metrics</h1>
         <div class="body-text">Every interaction from Awareness to Consideration, Connection to Conversion is generated, distributed, and measured from one Centralized Cloud, enabling Precise Attribution and Direct Correlation to Retail Outcomes.</div>
     </section>
 
@@ -199,11 +205,29 @@
 
     <section id="page5" class="page">
         <h1 class="headline">Let's Connect</h1>
-        </section>
+        <div class="contact-container">
+            <form id="contactForm">
+                <div class="form-group"><label>Name *</label><input type="text" required placeholder="Full Name"></div>
+                <div class="form-group"><label>Email *</label><input type="email" required placeholder="Email Address"></div>
+                <div class="form-group"><label>Message *</label><textarea rows="5" required placeholder="Your Message"></textarea></div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let player; const videoId = 'Cz7llVO6SUY';
+        
+        // One-time intro logic
+        window.addEventListener('load', () => {
+            if (sessionStorage.getItem('introPlayed')) {
+                const overlay = document.getElementById('intro-overlay');
+                overlay.style.display = 'none';
+                document.body.classList.remove('intro-active');
+            }
+        });
+
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
                 videoId: videoId,
@@ -220,6 +244,7 @@
             const overlay = document.getElementById('intro-overlay');
             overlay.classList.add('intro-hidden');
             document.body.classList.remove('intro-active');
+            sessionStorage.setItem('introPlayed', 'true'); // Save session flag
             setTimeout(() => { overlay.style.display = 'none'; player.pauseVideo(); }, 1200);
         }
 
@@ -227,14 +252,18 @@
             document.getElementById('sub-menu').classList.toggle('expanded');
         }
 
+        // Auto-hide menu on scroll
+        window.addEventListener('scroll', () => {
+            const subMenu = document.getElementById('sub-menu');
+            if (subMenu.classList.contains('expanded')) {
+                subMenu.classList.remove('expanded');
+            }
+        });
+
         function scrollToPage(pageId, btn) {
-            // Minimize menu if it was open
             document.getElementById('sub-menu').classList.remove('expanded');
-            
             if(!document.getElementById('intro-overlay').classList.contains('intro-hidden')) dismissIntro();
             document.getElementById(pageId).scrollIntoView({ behavior: 'smooth' });
-            
-            // Highlight logic
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
         }
