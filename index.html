@@ -60,22 +60,23 @@
             cursor: pointer; transition: 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             white-space: nowrap;
         }
+        /* Active State: Royal Blue Background, Red Text */
         .nav-btn.active { background-color: #4169E1 !important; color: #FF0000 !important; }
 
         /* --- PAGE LAYOUT --- */
         .page {
             width: 100%; min-height: 100vh; background-size: cover; background-position: center;
             position: relative; display: flex; flex-direction: column; align-items: center;
-            padding: 80px 20px 80px 20px; /* Reduced top padding to lift text */
+            padding: 100px 20px 60px 20px; /* Adjusted for better clearance */
         }
         .headline {
             text-align: center; color: white; font-size: clamp(1.8rem, 5vw, 3.2rem);
             font-weight: bold; text-shadow: 0 4px 10px rgba(0,0,0,0.8); 
-            margin-bottom: 20px; /* Fixed margin to keep text grouped and higher */
-            z-index: 10;
-            width: 100%; max-width: 1200px;
+            z-index: 10; width: 100%; max-width: 1200px;
+            margin-bottom: 20px; /* Keeps headline near top */
         }
         .body-text {
+            margin-top: auto; /* Pushes text to the bottom */
             color: white; font-size: 1.1rem; line-height: 1.7; text-align: center;
             max-width: 950px; padding: 30px 50px; 
             background-color: rgba(0, 0, 0, 0.25); 
@@ -84,13 +85,10 @@
             z-index: 10;
         }
 
-        /* Adjustments for Reels and Contact to keep them centered */
-        .reels-section, #page5 {
-            padding-top: 120px;
-        }
-        .reels-section .headline, #page5 .headline {
-            margin-bottom: auto;
-        }
+        /* Reels/Contact sections stay centered */
+        .reels-section, #page5 { padding-top: 140px; justify-content: flex-start; }
+        .reels-section .headline, #page5 .headline { margin-bottom: 40px; }
+        #page5 { justify-content: center; }
 
         /* --- PAGE 3 SPIDER OVERLAY --- */
         #page3::after {
@@ -102,7 +100,6 @@
         }
 
         /* --- REELS CAROUSELS --- */
-        .reels-section { background-color: #050505; justify-content: flex-start !important; }
         .carousel-wrapper { width: 100%; max-width: 1400px; margin-bottom: 40px; position: relative; z-index: 10; }
         .carousel-track {
             display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 10px 0;
@@ -120,7 +117,7 @@
         .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s; }
         .dot.active { background: #ffeb64; transform: scale(1.2); }
 
-        /* --- RESTORED CONTACT FORM --- */
+        /* --- CONTACT FORM --- */
         .contact-container {
             width: 100%; max-width: 600px; background-color: rgba(0, 0, 0, 0.4); 
             padding: 40px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(15px);
@@ -135,14 +132,13 @@
             width: 100%; padding: 20px; background: #ffeb64; border: none; border-radius: 12px; 
             font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: 0.3s;
         }
-        .submit-btn:hover { background: #ffd700; transform: translateY(-2px); }
 
-        /* Section Backgrounds */
+        /* Assets */
         #page1 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page1.jpg'); }
         #page2 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page2.jpg'); }
         #page3 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page3.jpg'); }
         #page4 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page4.jpg'); }
-        #page5 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page5.jpg'); justify-content: center; }
+        #page5 { background-image: url('https://raw.githubusercontent.com/newhdfilms/the-conduit-collective/main/images/page5.jpg'); }
     </style>
 </head>
 <body class="intro-active">
@@ -231,8 +227,10 @@
         window.addEventListener('load', () => {
             if (sessionStorage.getItem('introPlayed')) {
                 const overlay = document.getElementById('intro-overlay');
-                overlay.style.display = 'none';
-                document.body.classList.remove('intro-active');
+                if(overlay) {
+                    overlay.style.display = 'none';
+                    document.body.classList.remove('intro-active');
+                }
             }
         });
 
@@ -250,10 +248,12 @@
         }
         function dismissIntro() {
             const overlay = document.getElementById('intro-overlay');
-            overlay.classList.add('intro-hidden');
-            document.body.classList.remove('intro-active');
-            sessionStorage.setItem('introPlayed', 'true');
-            setTimeout(() => { overlay.style.display = 'none'; player.pauseVideo(); }, 1200);
+            if(overlay) {
+                overlay.classList.add('intro-hidden');
+                document.body.classList.remove('intro-active');
+                sessionStorage.setItem('introPlayed', 'true');
+                setTimeout(() => { overlay.style.display = 'none'; player.pauseVideo(); }, 1200);
+            }
         }
 
         function toggleProcessMenu() {
@@ -262,13 +262,14 @@
 
         window.addEventListener('scroll', () => {
             const subMenu = document.getElementById('sub-menu');
-            if (subMenu.classList.contains('expanded')) {
+            if (subMenu && subMenu.classList.contains('expanded')) {
                 subMenu.classList.remove('expanded');
             }
         });
 
         function scrollToPage(pageId, btn) {
-            document.getElementById('sub-menu').classList.remove('expanded');
+            const subMenu = document.getElementById('sub-menu');
+            if (subMenu) subMenu.classList.remove('expanded');
             if(!document.getElementById('intro-overlay').classList.contains('intro-hidden')) dismissIntro();
             document.getElementById(pageId).scrollIntoView({ behavior: 'smooth' });
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -278,6 +279,7 @@
         function setupDots(trackId, dotsId) {
             const track = document.getElementById(trackId);
             const dotsContainer = document.getElementById(dotsId);
+            if(!track || !dotsContainer) return;
             const items = track.querySelectorAll('.reel-item');
             items.forEach((_, i) => {
                 const dot = document.createElement('div');
